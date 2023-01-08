@@ -1,12 +1,22 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Users {
+export class Userdetails {
   @PrimaryGeneratedColumn()
-  id: number;
+  UserId: number;
 
   @Column()
-  name: string;
+  UserName: string;
   @Column()
-  password: string;
+  Password: string;
+  @Column()
+  FirstName: string;
+  @Column()
+  LastName: string;
+  @Column()
+  EmailId: string;
+  @Column()
+  Active: boolean;
+  @Column()
+  DateModified: Date;
 }
