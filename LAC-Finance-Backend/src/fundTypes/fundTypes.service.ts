@@ -13,6 +13,7 @@ export class FundTypesService {
   findAll() {
     return this.FundTypesRepository.find();
   }
+
   async getFundTypeByFundId(fundId: number): Promise<Dimfundtypes> {
     const fundType = await this.FundTypesRepository.findOne({
       where: { FundId: fundId },

@@ -3,7 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { CashFlowModule } from './cashFlowDetails/cashFlow.module';
 import { FundTypesModule } from './fundTypes/fundTypes.module';
+import { PortCoDetailsModule } from './portfolioCompanyDetails/portfolioCompanyDetails.module';
+import { ShareClassModule } from './shareClass/shareClass.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -22,6 +25,9 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     AuthModule,
     FundTypesModule,
+    PortCoDetailsModule,
+    ShareClassModule,
+    CashFlowModule,
   ],
   controllers: [AppController],
   providers: [AppService],

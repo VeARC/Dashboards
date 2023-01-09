@@ -1,12 +1,12 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Dimfundtypes {
+export class Dimshareclass {
   @PrimaryGeneratedColumn()
-  FundId: number;
+  ShareClassId: number;
 
   @Column()
-  FundType: string;
+  ShareClass: string;
 
   @Column()
   Created_Date: Date;

@@ -1,12 +1,12 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Dimfundtypes {
+export class Dimportcodetails {
   @PrimaryGeneratedColumn()
-  FundId: number;
+  PortCoId: number;
 
   @Column()
-  FundType: string;
+  ProtCoName: string;
 
   @Column()
   Created_Date: Date;

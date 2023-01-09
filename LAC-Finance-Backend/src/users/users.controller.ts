@@ -11,9 +11,9 @@ export class UsersController {
   getAll() {
     return this.usersService.findAll();
   }
+
   @Get('getUserByUserName')
   getUserByUserName(@Query('userName') userName: string) {
-    console.log(userName);
     return this.usersService.getUserByUserName(userName);
   }
 }

@@ -11,6 +11,7 @@ export class FundTypesController {
   getAll() {
     return this.fundTypesService.findAll();
   }
+
   @Get('getFundTypeByFundId')
   getFundTypeByFundId(@Query('fundId') fundId: number) {
     return this.fundTypesService.getFundTypeByFundId(fundId);
