@@ -5,9 +5,9 @@ import DashboardApp from './DashboardApp';
 import HomeApp from './HomeApp';
 import { Route } from 'react-router';
 import * as serviceWorker from './serviceWorker';
-import "core-js/stable";
-import "regenerator-runtime/runtime";
-import "isomorphic-fetch";
+// import "core-js/stable";
+// import "regenerator-runtime/runtime";
+// import "isomorphic-fetch";
 import { createBrowserHistory } from 'history';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');

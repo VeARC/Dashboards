@@ -20,7 +20,7 @@ import IconExpandMore from '@material-ui/icons/ExpandMore'
 import SettingsIcon from '@material-ui/icons/Settings';
 import PaymentIcon from '@material-ui/icons/Payment';
 import BarChartIcon from '@material-ui/icons/BarChart';
-import FarmarLogo from '../../components/common/farmar_horizontal.png';
+//import FarmarLogo from '../../components/common/farmar_horizontal.png';
 import AppsIcon from '@material-ui/icons/Apps';
 
 const drawerWidth = 240;
@@ -413,7 +413,7 @@ class NavMenu extends Component {
                         <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={this.handleDrawerClose}
                             className={classes.iconColor}> <MenuIcon />
                         </IconButton> }
-                        <img src={FarmarLogo} height={40} alt="Logo" />
+                        {/* <img src={FarmarLogo} height={40} alt="Logo" /> */}
                         <Typography variant="h6" className={classes.alignment}>                                                       
                             {/* <span className="header-font">                                
                                 { mediaQuery ? fullTitle : shortTitle }

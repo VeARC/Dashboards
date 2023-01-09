@@ -9,7 +9,7 @@ import '../../components/common/CommonModal.css';
 import { withRouter } from 'react-router-dom';
 import Loader from '../../components/loader/Loader';
 import api from '../../components/common/APIValues';
-import FarmarLogo from '../../components/common/farmar-logo.jpeg';
+//import FarmarLogo from '../../components/common/farmar-logo.jpeg';
 
 const useStyles = theme => ({
     root: {
@@ -177,7 +177,7 @@ class Home extends Component {
 
     render() {
         const { classes, mediaQuery } = this.props;
-        const title = 'EVENT MAGNET';
+        const title = 'LAC - Finance Model';
         const col6 = mediaQuery ? 6 : 12;
         const col3 = mediaQuery ? 6 : 3;
 
@@ -214,14 +214,14 @@ class Home extends Component {
                                         <Grid item xs={col3}>                                            
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <img src={FarmarLogo} alt="Logo" />
+                                            {/* <img src={FarmarLogo} alt="Logo" /> */}
                                         </Grid>
                                         <Grid item xs={col3}>                                            
                                         </Grid>
                                     </Grid>
                                 </Grid>) : (
                                 <Grid item xs={col6} style={{ textAlign: 'center' }}>
-                                    <img src={FarmarLogo} alt="Logo" />
+                                    {/* <img src={FarmarLogo} alt="Logo" /> */}
                                 </Grid>
                                 )}
                                 <Grid item xs={col6} style={{ marginTop: 32, marginLeft: mediaQuery? 0 : 20, marginRight: mediaQuery? 0 : 20 }}>
