@@ -8,7 +8,7 @@ export class AppController {
 
   @UseGuards(AuthGuard('local'))
   @Post('/login')
-  login(@Request() req): string {
+  login(@Request() req): unknown {
     return this.authService.generateToken({ ...req.user });
   }
 }

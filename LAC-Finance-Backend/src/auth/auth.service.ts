@@ -6,7 +6,7 @@ import { Userdetails } from 'src/entities/users.entity';
 export class AuthService {
   constructor(private readonly jwtService: JwtService) {}
 
-  generateToken(payload: Userdetails): string {
-    return this.jwtService.sign(payload);
+  generateToken(payload: Userdetails): unknown {
+    return { token: this.jwtService.sign(payload) };
   }
 }

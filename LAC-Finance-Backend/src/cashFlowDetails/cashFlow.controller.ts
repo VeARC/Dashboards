@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import { Delete, Param } from '@nestjs/common/decorators';
 import { AuthGuard } from '@nestjs/passport';
 import { Factcashflowdetails } from 'src/entities/cashFlowDetails.entity';
 import { CashFlowService } from './cashFlow.service';
@@ -21,5 +30,18 @@ export class CashFlowController {
   @Post('createCashFlow')
   createCashFlow(@Body() cashFlow: Factcashflowdetails) {
     return this.cashFlowService.createCashFlowDetail(cashFlow);
+  }
+
+  @Put('updateCashFlow/:id')
+  updateCashFlow(
+    @Param('id') id: number,
+    @Body() cashFlow: Factcashflowdetails,
+  ) {
+    return this.cashFlowService.updateCashFlowDetail(id, cashFlow);
+  }
+
+  @Delete('deleteCashFlow/:id')
+  deleteCashFlow(@Param('id') id: number) {
+    return this.cashFlowService.deleteCashFlowDetail(id);
   }
 }
