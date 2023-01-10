@@ -14,17 +14,33 @@ const useStyles = theme => ({
     topMarginMd: {
         marginTop: 35,
     },
-    root: {
+    customButtonSecondary: {
         borderRadius: '8px',
-        fontSize: 12, 
-        height: '2.1rem',
-        backgroundColor: "#2b494b",
+        fontWeight: 500,
+        color: "#702492",
+        backgroundColor: "#f9f9f9",
         "&:hover": {
-            backgroundColor: "#2b494b"
+            backgroundColor: "#f9f9f9"
         },
         "&:disabled": {
             backgroundColor: "rgba(0, 0, 0, 0.12)"
         },
+        textTransform: 'none',
+        fontFamily: 'poppins',
+    },
+    customButtonPrimary: {
+        borderRadius: '8px',
+        fontWeight: 500,
+        color: "#f9f9f9",
+        backgroundColor: "#702492",
+        "&:hover": {
+            backgroundColor: "#702492"
+        },
+        "&:disabled": {
+            backgroundColor: "rgba(0, 0, 0, 0.12)"
+        },
+        textTransform: 'none',
+        fontFamily: 'poppins',
     },
     customButtonInfo: {
         borderRadius: '8px',

@@ -1,7 +1,7 @@
 {
-  "name": "farmar-fresh",
+  "name": "lac-finance",
   "version": "0.1.0",
-  "homepage": "/View/",
+  "homepage": "/",
   "private": true,
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
