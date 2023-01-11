@@ -17,7 +17,7 @@ import "../../components/common/Common.css";
 import "../../components/common/CommonModal.css";
 import Loader from "../../components/loader/Loader";
 import { post } from "../../services/APIService";
-//import FarmarLogo from '../../components/common/farmar-logo.jpeg';
+import LACLogo from "../../components/images/LACLogo.png";
 
 const useStyles = (theme) => ({
   root: {
@@ -271,14 +271,14 @@ class Home extends Component {
                   <Grid container spacing={0}>
                     <Grid item xs={col3}></Grid>
                     <Grid item xs={6}>
-                      {/* <img src={FarmarLogo} alt="Logo" /> */}
+                      <img src={LACLogo} alt="Logo" height="15%" />
                     </Grid>
                     <Grid item xs={col3}></Grid>
                   </Grid>
                 </Grid>
               ) : (
                 <Grid item xs={col6} style={{ textAlign: "center" }}>
-                  {/* <img src={FarmarLogo} alt="Logo" /> */}
+                  <img src={LACLogo} alt="Logo" height="15%" />
                 </Grid>
               )}
               <Grid

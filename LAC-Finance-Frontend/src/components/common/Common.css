@@ -17,12 +17,12 @@
 }
 
 .header-color{
-    background-color: #347f58;
+    background-color: #702492;
 }
 
 .header-text-color{
-    color: #f16623;
-    font-family: 'Open Sans', sans-serif;
+    color: #000000;
+    font-family: 'poppins';
 }
 
 .dashboard-text-color{
@@ -97,7 +97,7 @@
 .drawerItemsText {
     margin-left: 18px;
     color: gray;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'poppins' !important;
 }
 
 .selectTopMargin{
@@ -113,14 +113,19 @@
 }
 
 .ag-theme-alpine .ag-header-cell {
-    background-color: #02a959;
-    color: white;
+    background-color: #858189;
+    color: #f9f9f9;
     font-size: 14px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'poppins';
+}
+
+.ag-theme-alpine .ag-cell {
+    font-family: 'poppins';
+    font-size: 13px;
 }
 
 .table-header-custom {
-    background-color: #02a959;    
+    background-color: #858189;    
 }
 .table-row-custom {
     color: white;
