@@ -50,4 +50,9 @@ export class CashFlowController {
   searchCashFlowDetails(@Body() searchParams: SearchDTO) {
     return this.cashFlowService.searchCashFlowDetails(searchParams);
   }
+
+  @Get('getDistinctYears')
+  getDistinctYears() {
+    return this.cashFlowService.getYears();
+  }
 }

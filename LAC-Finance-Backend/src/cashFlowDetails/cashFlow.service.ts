@@ -111,4 +111,10 @@ export class CashFlowService {
     });
     return cashFlowDetailsDTO;
   }
+
+  async getYears(): Promise<any> {
+    return this.cashFlowRepository
+      .query(` SELECT DISTINCT(YEAR(Date)) Year FROM factCashFlowDetails
+    ORDER BY YEAR(Date)`);
+  }
 }
