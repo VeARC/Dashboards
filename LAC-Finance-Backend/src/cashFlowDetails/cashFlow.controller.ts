@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { Delete, Param } from '@nestjs/common/decorators';
 import { AuthGuard } from '@nestjs/passport';
+import { SearchDTO } from 'src/DTO/searchDTO';
 import { Factcashflowdetails } from 'src/entities/cashFlowDetails.entity';
 import { CashFlowService } from './cashFlow.service';
 
@@ -43,5 +44,10 @@ export class CashFlowController {
   @Delete('deleteCashFlow/:id')
   deleteCashFlow(@Param('id') id: number) {
     return this.cashFlowService.deleteCashFlowDetail(id);
+  }
+
+  @Get('searchCashFlows')
+  searchCashFlowDetails(@Body() searchParams: SearchDTO) {
+    return this.cashFlowService.searchCashFlowDetails(searchParams);
   }
 }

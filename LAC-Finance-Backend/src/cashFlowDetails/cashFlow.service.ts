@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CashFlowDTO } from 'src/DTO/CashFlowDTO';
+import { SearchDTO } from 'src/DTO/searchDTO';
 import { Factcashflowdetails } from 'src/entities/cashFlowDetails.entity';
 import { Dimfundtypes } from 'src/entities/fundTypes.entity';
 import { Dimportcodetails } from 'src/entities/portfolioCompanyDetails.entity';
 import { Dimshareclass } from 'src/entities/shareClass.entity';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 
 @Injectable()
 export class CashFlowService {
@@ -73,5 +74,41 @@ export class CashFlowService {
   //Delete a cashflow
   async deleteCashFlowDetail(id: number): Promise<any> {
     return this.cashFlowRepository.delete(id);
+  }
+
+  //search cashflow
+  async searchCashFlowDetails(searchParams: SearchDTO): Promise<any> {
+    const fundType = await this.fundTypesRepository.findOne({
+      where: { FundId: searchParams.FundId },
+    });
+
+    const shareClass = await this.shareClassRepository.findOne({
+      where: { ShareClassId: searchParams.ShareClassId },
+    });
+
+    const portfolio = await this.portCoDetailsRepository.findOne({
+      where: { PortCoId: searchParams.PortCoId },
+    });
+    const cashFlowDetails = await this.cashFlowRepository.find({
+      where: [
+        {
+          FundId: searchParams.FundId,
+          ShareClassId: searchParams.ShareClassId,
+          PortCoId: searchParams.PortCoId,
+          Date: Between(searchParams.startDate, searchParams.endDate),
+        },
+      ],
+    });
+
+    // //Need to come up with better approach
+    const cashFlowDetailsDTO: CashFlowDTO[] = cashFlowDetails.map((x) => {
+      return {
+        ...x,
+        FundType: fundType.FundType,
+        PortCoName: portfolio.ProtCoName,
+        ShareClass: shareClass.ShareClass,
+      };
+    });
+    return cashFlowDetailsDTO;
   }
 }
