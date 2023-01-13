@@ -6,7 +6,7 @@ export class Dimportcodetails {
   PortCoId: number;
 
   @Column()
-  ProtCoName: string;
+  PortCoName: string;
 
   @Column()
   Created_Date: Date;

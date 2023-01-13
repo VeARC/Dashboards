@@ -16,7 +16,7 @@ class Loader extends Component {
                 <GridLoader
                     css={override}
                     size={15}
-                    color="#2b494b"
+                    color="#702492"
                 />
             </div>
         );

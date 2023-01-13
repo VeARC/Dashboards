@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
 import Layout from './components/navigation/Layout';
-import CashFlowDetails from './pages/dashboard/CashFlowDetails';
-import UserManagement from './pages/user/UserManagement';
+import CashFlowDetails from './pages/cashflow/CashFlowDetails';
+import UserManagement from './pages/settings/UserManagement';
 
 export default class DashboardApp extends Component {
     static displayName = DashboardApp.name;

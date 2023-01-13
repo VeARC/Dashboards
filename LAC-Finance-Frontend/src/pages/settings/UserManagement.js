@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import '../../components/common/Common.css';
 import { Button, TextField, Grid, withStyles, Select, MenuItem, useMediaQuery } from '@material-ui/core';
-import '../../components/common/CommonModal.css';
 import { withRouter } from 'react-router-dom';
 import Loader from '../../components/loader/Loader';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import ActionRenderer from '../../components/common/ActionRenderer';
-import ConfirmModal from '../../components/modal/ConfirmModal';
-import ErrorModal from '../../components/modal/ErrorModal';
-import api from '../../components/common/APIValues';
 import CreateIcon from '@material-ui/icons/Create';
 import { useStyles } from '../../components/common/useStyles';
 
@@ -106,7 +102,7 @@ class UserManagement extends Component {
     }
 
     loadUsers(){
-        let partialUrl = api.URL;
+        let partialUrl //= api.URL;
         fetch(partialUrl + 'Home/GetUsers')
             .then(res => res.json())
             .then(result => this.setState({ rowData: result, loading: false }))
@@ -115,7 +111,7 @@ class UserManagement extends Component {
 
     DeleteRecord(){
         let UserId = this.state.userId;
-        let partialUrl = api.URL;
+        let partialUrl //= api.URL;
         fetch(partialUrl + 'Home/RemoveUser?UserId=' + UserId, {
             method: 'POST',
             mode: 'cors'
@@ -154,7 +150,7 @@ class UserManagement extends Component {
     }
 
     createUser(newUser) {
-        let partialUrl = api.URL;
+        let partialUrl //= api.URL;
         fetch(partialUrl + 'Home/CreateUser', {
             method: 'POST',
             mode: 'cors',
@@ -228,9 +224,6 @@ class UserManagement extends Component {
                     <Loader />
                 ) : (
                     <div>
-                        <ErrorModal ref="errModalComp" />
-                        <ConfirmModal ref="cnfrmModalComp" onClick={(e) => this.DeleteRecord(e)} />
-
                         <form onSubmit={this.loginToDashboard} noValidate>
                             <h2 className="header-text-color">User Management</h2>
                             <Grid container spacing={3}>

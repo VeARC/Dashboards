@@ -9,6 +9,7 @@ import * as serviceWorker from './serviceWorker';
 // import "regenerator-runtime/runtime";
 // import "isomorphic-fetch";
 import { createBrowserHistory } from 'history';
+import "./index.css";
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');

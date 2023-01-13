@@ -10,18 +10,13 @@ import AccountCircle from '@material-ui/icons/AccountCircleOutlined';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import '../../components/common/Common.css'
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import BubbleChartIcon from '@material-ui/icons/BubbleChart';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import PeopleIcon from '@material-ui/icons/People';
-import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
-import IconExpandLess from '@material-ui/icons/ExpandLess'
-import IconExpandMore from '@material-ui/icons/ExpandMore'
-import SettingsIcon from '@material-ui/icons/Settings';
-import PaymentIcon from '@material-ui/icons/Payment';
-import BarChartIcon from '@material-ui/icons/BarChart';
-//import FarmarLogo from '../../components/common/farmar_horizontal.png';
+import SettingsIcon from '@material-ui/icons/SupervisorAccount';
+import StoreIcon from '@material-ui/icons/Store';
+import MergeTypeIcon from '@material-ui/icons/MergeType';
+import ClassIcon from '@material-ui/icons/Class';
 import AppsIcon from '@material-ui/icons/Apps';
+import LACLogo from "../../assets/LACLogo2.png";
 
 const drawerWidth = 240;
 
@@ -66,15 +61,15 @@ const useStyles = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: 500,
         }),
-        width: drawerWidth,        
-        backgroundColor: 'white',        
+        width: drawerWidth,
+        backgroundColor: 'white',
     },
     drawerShow: {
         transition: theme.transitions.create('left', {
             easing: theme.transitions.easing.sharp,
             duration: 500,
         }),
-        width: drawerWidth,        
+        width: drawerWidth,
         backgroundColor: 'white',
         position: 'fixed',
         left: '0px',
@@ -130,35 +125,35 @@ const useStyles = theme => ({
         width: 89,
     },
     iconColor: {
-        color: 'white'
+        color: '#702492'
     },
     textColor: {
-        color: 'white',
+        color: '#702492',
         fontFamily: 'poppins',
     },
     btnText: {
-        fontSize: 12, 
-        color: 'white',
+        fontSize: 14,
+        color: '#702492',
         fontFamily: 'poppins',
         textTransform: 'none',
     }
 });
 
 const withMediaQuery = (...args) => Component => props => {
-    const mediaQuery = useMediaQuery(...args);    
+    const mediaQuery = useMediaQuery(...args);
     return <Component mediaQuery={mediaQuery} {...props} />;
-  };
+};
 
 class NavMenu extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
-            open: false, 
+        this.state = {
+            open: false,
             currentStatus: '',
         };
     }
 
-    handleDrawerOpen = () => {        
+    handleDrawerOpen = () => {
         this.setState({ open: true })
     };
     handleDrawerClose = () => {
@@ -166,15 +161,15 @@ class NavMenu extends Component {
     };
 
     logOut = (event) => {
-        event.preventDefault();        
+        event.preventDefault();
         sessionStorage.setItem('loggedInUser', '');
         const { history } = this.props;
         if (history) history.push('/Home');
     }
 
-    hideNavBar(){
+    hideNavBar() {
         console.log(this.state.open)
-        if(window.innerWidth <= 600) {
+        if (window.innerWidth <= 600) {
             this.setState({ open: true });
         }
     }
@@ -195,41 +190,38 @@ class NavMenu extends Component {
 
     render() {
         const { classes, mediaQuery } = this.props;
-        
+
         return (
             <div className={classes.root}>
                 <CssBaseline />
                 <AppBar position="fixed" className={classes.appBar}>
-                    <Toolbar className="header-color">
-                        { !mediaQuery &&
-                        <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={this.handleDrawerClose}
-                            className={classes.iconColor}> <MenuIcon />
-                        </IconButton> }
-                        {/* <img src={FarmarLogo} height={40} alt="Logo" /> */}
-                        <Typography variant="h6" className={classes.alignment}>                                                       
-                            {/* <span className="header-font">                                
-                                { mediaQuery ? fullTitle : shortTitle }
-                            </span> */}
+                    <Toolbar>
+                        {!mediaQuery &&
+                            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={this.handleDrawerClose}
+                                className={classes.iconColor}> <MenuIcon />
+                            </IconButton>}
+                        <img src={LACLogo} height={50} alt="Logo" />
+                        <Typography variant="h6" className={classes.alignment}>
                         </Typography>
-                        <div>                            
+                        <div>
                             <Button color="primary" className={classes.btnText} onClick={this.redirectToDashboard}>
                                 <AppsIcon className={classes.leftIcon} />
                                 Dashboard
                             </Button>
 
-                            { mediaQuery &&
-                            <IconButton aria-label="account of current user" aria-controls="menu-appbar"
-                                aria-haspopup="true" onClick={this.handleMenu} color="inherit">
-                                <AccountCircle className={classes.iconColor} />
-                            </IconButton> }
+                            {mediaQuery &&
+                                <IconButton aria-label="account of current user" aria-controls="menu-appbar"
+                                    aria-haspopup="true" onClick={this.handleMenu} color="inherit">
+                                    <AccountCircle className={classes.iconColor} />
+                                </IconButton>}
 
-                            { mediaQuery &&
-                            <span className={classes.textColor}>{sessionStorage.getItem('loggedInUser')}</span> }
-                            { mediaQuery &&
-                            <Button color="primary" className={classes.btnText} onClick={this.logOut}>
-                                <PowerSettingsNewIcon className={classes.leftIcon} />
-                                Logout
-                            </Button> }
+                            {mediaQuery &&
+                                <span className={classes.textColor}>{sessionStorage.getItem('loggedInUser')}</span>}
+                            {mediaQuery &&
+                                <Button color="primary" className={classes.btnText} onClick={this.logOut}>
+                                    <PowerSettingsNewIcon className={classes.leftIcon} />
+                                    Logout
+                                </Button>}
                         </div>
                     </Toolbar>
                 </AppBar>
@@ -237,7 +229,7 @@ class NavMenu extends Component {
                 <Drawer
                     variant="permanent"
                     className=
-                    { mediaQuery ?
+                    {mediaQuery ?
                         clsx(classes.drawer, {
                             [classes.drawerOpen]: this.state.open,
                             [classes.drawerClose]: !this.state.open,
@@ -248,7 +240,7 @@ class NavMenu extends Component {
                         })
                     }
                     classes=
-                    { mediaQuery ?
+                    {mediaQuery ?
                         {
                             paper: clsx({
                                 [classes.drawerOpen]: this.state.open,
@@ -262,7 +254,7 @@ class NavMenu extends Component {
                             }),
                         }
                     } >
-                    
+
                     <div className={classes.toolbar}>
                         {this.state.open ?
                             <IconButton onClick={this.handleDrawerClose}>
@@ -273,29 +265,53 @@ class NavMenu extends Component {
                     </div>
                     <List style={{ marginLeft: 5 }}>
 
-                        {/* Products Management */}                        
+                        {/* Products Management */}
+                        <ListItem button onClick={this.redirectToCashFlowDetails}>
+                            <Tooltip title="Cash Flow Details">
+                                <StoreIcon className="drawerItems" />
+                            </Tooltip>
+                            <ListItemText className="drawerItemsText"><span style={{ fontFamily: 'poppins' }}>PortCo</span></ListItemText>
+                        </ListItem>
+
+                        {/* Products Management */}
+                        <ListItem button onClick={this.redirectToCashFlowDetails}>
+                            <Tooltip title="Cash Flow Details">
+                                <MergeTypeIcon className="drawerItems" />
+                            </Tooltip>
+                            <ListItemText className="drawerItemsText"><span style={{ fontFamily: 'poppins' }}>Fund Types</span></ListItemText>
+                        </ListItem>
+
+                        {/* Products Management */}
+                        <ListItem button onClick={this.redirectToCashFlowDetails}>
+                            <Tooltip title="Cash Flow Details">
+                                <ClassIcon className="drawerItems" />
+                            </Tooltip>
+                            <ListItemText className="drawerItemsText"><span style={{ fontFamily: 'poppins' }}>Share Class</span></ListItemText>
+                        </ListItem>
+
+                        {/* Products Management */}
                         <ListItem button onClick={this.redirectToCashFlowDetails}>
                             <Tooltip title="Cash Flow Details">
                                 <BubbleChartIcon className="drawerItems" />
                             </Tooltip>
-                            <ListItemText className="drawerItemsText"><span style={{fontFamily: 'poppins'}}>Cash Flow Details</span></ListItemText>
+                            <ListItemText className="drawerItemsText"><span style={{ fontFamily: 'poppins' }}>Cash Flow Details</span></ListItemText>
                         </ListItem>
-                        
+
                         {/* Configurations */}
                         <ListItem button onClick={this.redirectToUserManagement}>
                             <Tooltip title="User Management">
                                 <SettingsIcon className="drawerItems" />
                             </Tooltip>
-                            <ListItemText className="drawerItemsText"><span style={{fontFamily: 'poppins'}}>User Management</span></ListItemText>
+                            <ListItemText className="drawerItemsText"><span style={{ fontFamily: 'poppins' }}>User Management</span></ListItemText>
                         </ListItem>
 
-                        { !mediaQuery &&
-                        <ListItem button onClick={this.logOut}>
-                            <Tooltip title="Logout">
-                                <PowerSettingsNewIcon className="drawerItems" />
-                            </Tooltip>
-                            <ListItemText className="drawerItemsText"><span style={{fontFamily: 'poppins'}}>Logout</span></ListItemText>
-                        </ListItem> }
+                        {!mediaQuery &&
+                            <ListItem button onClick={this.logOut}>
+                                <Tooltip title="Logout">
+                                    <PowerSettingsNewIcon className="drawerItems" />
+                                </Tooltip>
+                                <ListItemText className="drawerItemsText"><span style={{ fontFamily: 'poppins' }}>Logout</span></ListItemText>
+                            </ListItem>}
                     </List>
                 </Drawer>
             </div>

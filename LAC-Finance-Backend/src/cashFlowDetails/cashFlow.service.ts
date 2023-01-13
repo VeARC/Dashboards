@@ -6,7 +6,7 @@ import { Factcashflowdetails } from 'src/entities/cashFlowDetails.entity';
 import { Dimfundtypes } from 'src/entities/fundTypes.entity';
 import { Dimportcodetails } from 'src/entities/portfolioCompanyDetails.entity';
 import { Dimshareclass } from 'src/entities/shareClass.entity';
-import { Between, Repository } from 'typeorm';
+import { Between, Repository, MoreThan, LessThan } from 'typeorm';
 
 @Injectable()
 export class CashFlowService {
@@ -34,7 +34,7 @@ export class CashFlowService {
         ...x,
         FundType: fundTypes.find((f) => f.FundId === x.FundId).FundType,
         PortCoName: portfolios.find((p) => p.PortCoId === x.PortCoId)
-          .ProtCoName,
+          .PortCoName,
         ShareClass: shareClasses.find((s) => s.ShareClassId === x.ShareClassId)
           .ShareClass,
       };
@@ -79,23 +79,23 @@ export class CashFlowService {
   //search cashflow
   async searchCashFlowDetails(searchParams: SearchDTO): Promise<any> {
     const fundType = await this.fundTypesRepository.findOne({
-      where: { FundId: searchParams.FundId },
+      where: { FundId: searchParams.FundId > 0 ? searchParams.FundId : MoreThan(0) },
     });
 
     const shareClass = await this.shareClassRepository.findOne({
-      where: { ShareClassId: searchParams.ShareClassId },
+      where: { ShareClassId: searchParams.ShareClassId > 0 ? searchParams.ShareClassId : MoreThan(0) },
     });
 
     const portfolio = await this.portCoDetailsRepository.findOne({
-      where: { PortCoId: searchParams.PortCoId },
+      where: { PortCoId: searchParams.PortCoId > 0 ? searchParams.PortCoId : MoreThan(0) },
     });
     const cashFlowDetails = await this.cashFlowRepository.find({
       where: [
         {
-          FundId: searchParams.FundId,
-          ShareClassId: searchParams.ShareClassId,
-          PortCoId: searchParams.PortCoId,
-          Date: Between(searchParams.startDate, searchParams.endDate),
+          FundId: searchParams.FundId > 0 ? searchParams.FundId : MoreThan(0),
+          ShareClassId: searchParams.ShareClassId > 0 ? searchParams.ShareClassId : MoreThan(0),
+          PortCoId: searchParams.PortCoId > 0 ? searchParams.PortCoId : MoreThan(0),
+          Date: searchParams.endDate ? Between(searchParams.startDate, searchParams.endDate) : LessThan(new Date('8888-12-31')),
         },
       ],
     });
@@ -105,8 +105,8 @@ export class CashFlowService {
       return {
         ...x,
         FundType: fundType.FundType,
-        PortCoName: portfolio.ProtCoName,
-        ShareClass: shareClass.ShareClass,
+        PortCoName: portfolio.PortCoName,
+        ShareClass: shareClass.ShareClass
       };
     });
     return cashFlowDetailsDTO;
@@ -114,7 +114,7 @@ export class CashFlowService {
 
   async getYears(): Promise<any> {
     return this.cashFlowRepository
-      .query(` SELECT DISTINCT(YEAR(Date)) Year FROM factCashFlowDetails
-    ORDER BY YEAR(Date)`);
+       .query(`SELECT DISTINCT(YEAR(Date)) Year FROM factCashFlowDetails
+    ORDER BY YEAR(Date) DESC`);
   }
 }

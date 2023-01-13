@@ -46,7 +46,7 @@ export class CashFlowController {
     return this.cashFlowService.deleteCashFlowDetail(id);
   }
 
-  @Get('searchCashFlows')
+  @Post('searchCashFlows')
   searchCashFlowDetails(@Body() searchParams: SearchDTO) {
     return this.cashFlowService.searchCashFlowDetails(searchParams);
   }
