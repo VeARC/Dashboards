@@ -71,6 +71,6 @@ export default {
         var year = date_components[0];
         var month = date_components[1];
         var day = date_components[2];
-        return month + '/' + day + '/' + year;
+        return year + '-' + month + '-' + day;
     }
 }
