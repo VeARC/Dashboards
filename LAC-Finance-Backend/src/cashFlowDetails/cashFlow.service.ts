@@ -23,7 +23,9 @@ export class CashFlowService {
 
   //Get all cashflow details
   async findAll() {
-    const cashFlowDetails = await this.cashFlowRepository.find();
+    const cashFlowDetails = await this.cashFlowRepository.find({
+      order: { ModifiedDate: { direction: 'DESC' } },
+    });
     const fundTypes = await this.fundTypesRepository.find();
     const portfolios = await this.portCoDetailsRepository.find();
     const shareClasses = await this.shareClassRepository.find();
@@ -114,6 +116,7 @@ export class CashFlowService {
             : LessThan(new Date('8888-12-31')),
         },
       ],
+      order: { ModifiedDate: { direction: 'DESC' } },
     });
 
     // //Need to come up with better approach
