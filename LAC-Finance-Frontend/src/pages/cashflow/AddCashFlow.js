@@ -73,7 +73,11 @@ export default function AddCashFlow(props) {
                 });
             } else {
                 let id = cashFlowDetails.RecordId;
+                //cashFlowDetails.Date = '2020-01-01';
                 delete cashFlowDetails.RecordId;
+                delete cashFlowDetails.FundType;
+                delete cashFlowDetails.PortCoName;
+                delete cashFlowDetails.ShareClass;
                 update('/cashFlow/updateCashFlow', cashFlowDetails, id).then(response => {
                     reset();
                     props.onAddCashFlow();
@@ -162,7 +166,16 @@ export default function AddCashFlow(props) {
             CreatedDate: null,
             ModifiedBy: null,
             ModifiedDate: null,
-        })
+        });
+
+        setErrors({
+            portCoId: '',
+            fundId: '',
+            shareClassId: '',
+            date: '',
+            investmentCost: '',
+            estimatedValue: '',
+        });
     }
 
     const validateAllInputs = () => {
@@ -248,7 +261,7 @@ export default function AddCashFlow(props) {
                         </Grid>
                         <Grid item xs={12}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <KeyboardDatePicker fullWidth format="MM/dd/yyyy"
+                                <KeyboardDatePicker fullWidth format="yyyy-MM-dd"
                                     id="dateUpdated" label="Date"
                                     value={cashFlowDetails.Date}
                                     onChange={handleDateChange}
