@@ -17,7 +17,6 @@ import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import ActionRenderer from "../../components/common/ActionRenderer";
 import { useStyles } from "../../components/common/useStyles";
-import AddCashFlow from "./AddCashFlow";
 import { create, get, remove, search } from "../../api-services/Service";
 import DeleteConfirmation from "../../components/modal/DeleteConfirmation";
 import CommonFunc from "../../components/common/CommonFunc";
@@ -31,7 +30,7 @@ const withMediaQuery =
     return <Component mediaQuery={mediaQuery} {...props} />;
   };
 
-class CashFlowDetails extends Component {
+class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -214,13 +213,13 @@ class CashFlowDetails extends Component {
     let loggedInUser = sessionStorage.getItem("loggedInUser");
 
     if (loggedInUser) {
-      this.setState({ loading: true });
-      this.getPortCoDetails();
-      this.getFundTypes();
-      this.getShareClasses();
-      this.getCashFlowDetails();
-      this.getYears();
-      this.setState({ loading: false });
+    //   this.setState({ loading: true });
+    //   this.getPortCoDetails();
+    //   this.getFundTypes();
+    //   this.getShareClasses();
+    //   this.getCashFlowDetails();
+    //   this.getYears();
+    //   this.setState({ loading: false });
     } else {
       const { history } = this.props;
       if (history) history.push("/Home");
@@ -259,7 +258,6 @@ class CashFlowDetails extends Component {
 
   clearSearchInput = () => {
     this.reset();
-    this.getCashFlowDetails();
   };
 
   render() {
@@ -286,27 +284,11 @@ class CashFlowDetails extends Component {
           <Loader />
         ) : (
           <div>
-            <AddCashFlow
-              open={this.state.open}
-              cashFlowData={this.state.cashFlowData}
-              handleClose={this.handleClose}
-              onAddCashFlow={this.onAddCashFlow}
-              portCoDetails={portCoDetails}
-              fundTypes={fundTypes}
-              shareClasses={shareClasses}
-            />
-
-            <DeleteConfirmation
-              showConfirm={this.state.showConfirm}
-              handleConfirmClose={this.handleConfirmClose}
-              deleteRecord={this.deleteRecord}
-            />
-
             <Grid container spacing={0}>
               <Grid item xs={3}>
-                <h2 className="header-text-color">Cash Flow Details</h2>
+                <h2 className="header-text-color">Power BI Dashboard</h2>
               </Grid>
-              <Grid item xs={9} style={{ margin: "auto" }}>
+              {/* <Grid item xs={9} style={{ margin: "auto" }}>
                 <Button
                   className={classes.customButtonPrimary}
                   variant="contained"
@@ -317,15 +299,14 @@ class CashFlowDetails extends Component {
                 >
                   Add Cash Flow
                 </Button>
-              </Grid>
+              </Grid> */}
             </Grid>
-            <Grid container spacing={2}>
+            {/* <Grid container spacing={2}>
               <Grid item xs={3}>
                 <FormControl fullWidth variant="outlined" size="small">
                   <InputLabel
                     style={{ fontFamily: "poppins" }}
                     id="demo-simple-select-label"
-                    shrink={!this.state.PortCoId ? false : true}
                   >
                     PortCo Name
                   </InputLabel>
@@ -337,7 +318,6 @@ class CashFlowDetails extends Component {
                     onChange={this.handleChange}
                     name="PortCoId"
                     style={{ backgroundColor: "#f9f9f9" }}
-                    notched={!this.state.PortCoId ? false : true}
                   >
                     <MenuItem value="0">All</MenuItem>
                     {portCoDetails}
@@ -349,7 +329,6 @@ class CashFlowDetails extends Component {
                   <InputLabel
                     style={{ fontFamily: "poppins" }}
                     id="demo-simple-select-label"
-                    shrink={!this.state.FundId ? false : true}
                   >
                     Fund Type
                   </InputLabel>
@@ -361,7 +340,6 @@ class CashFlowDetails extends Component {
                     onChange={this.handleChange}
                     name="FundId"
                     style={{ backgroundColor: "#f9f9f9" }}
-                    notched={!this.state.FundId ? false : true}
                   >
                     <MenuItem value="0">All</MenuItem>
                     {fundTypes}
@@ -373,7 +351,6 @@ class CashFlowDetails extends Component {
                   <InputLabel
                     style={{ fontFamily: "poppins" }}
                     id="demo-simple-select-label"
-                    shrink={!this.state.ShareClassId ? false : true}
                   >
                     Share Class
                   </InputLabel>
@@ -385,7 +362,6 @@ class CashFlowDetails extends Component {
                     onChange={this.handleChange}
                     name="ShareClassId"
                     style={{ backgroundColor: "#f9f9f9" }}
-                    notched={!this.state.ShareClassId ? false : true}
                   >
                     <MenuItem value="0">All</MenuItem>
                     {shareClasses}
@@ -397,7 +373,6 @@ class CashFlowDetails extends Component {
                   <InputLabel
                     style={{ fontFamily: "poppins" }}
                     id="demo-simple-select-label"
-                    shrink={!this.state.Year ? false : true}
                   >
                     Year
                   </InputLabel>
@@ -409,7 +384,6 @@ class CashFlowDetails extends Component {
                     onChange={this.handleChange}
                     name="Year"
                     style={{ backgroundColor: "#f9f9f9" }}
-                    notched={!this.state.Year ? false : true}
                   >
                     <MenuItem value="0">All</MenuItem>
                     {years}
@@ -421,7 +395,6 @@ class CashFlowDetails extends Component {
                   <InputLabel
                     style={{ fontFamily: "poppins" }}
                     id="demo-simple-select-label"
-                    shrink={!this.state.Quarter ? false : true}
                   >
                     Quarter
                   </InputLabel>
@@ -433,7 +406,6 @@ class CashFlowDetails extends Component {
                     onChange={this.handleChange}
                     name="Quarter"
                     style={{ backgroundColor: "#f9f9f9" }}
-                    notched={!this.state.Quarter ? false : true}
                   >
                     <MenuItem value="0">All</MenuItem>
                     <MenuItem value="Q1">Q1</MenuItem>
@@ -491,7 +463,7 @@ class CashFlowDetails extends Component {
                   />
                 </div>
               </Grid>
-            </Grid>
+            </Grid> */}
           </div>
         )}
         <StatusBar
@@ -508,5 +480,5 @@ class CashFlowDetails extends Component {
 }
 
 export default withRouter(
-  withStyles(useStyles)(withMediaQuery("(min-width:600px)")(CashFlowDetails))
+  withStyles(useStyles)(withMediaQuery("(min-width:600px)")(Dashboard))
 );

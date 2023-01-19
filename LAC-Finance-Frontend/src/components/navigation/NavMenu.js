@@ -181,11 +181,39 @@ class NavMenu extends Component {
         if (history) history.push('/home/cashflowdetails');
     }
 
+    redirectToFundTypes = (event) => {
+        event.preventDefault();
+        this.hideNavBar();
+        const { history } = this.props;
+        if (history) history.push('/home/fundtypes');
+    }
+
+    redirectToPortCo = (event) => {
+        event.preventDefault();
+        this.hideNavBar();
+        const { history } = this.props;
+        if (history) history.push('/home/portco');
+    }
+
+    redirectToShareClass = (event) => {
+        event.preventDefault();
+        this.hideNavBar();
+        const { history } = this.props;
+        if (history) history.push('/home/shareclass');
+    }
+
     redirectToUserManagement = (event) => {
         event.preventDefault();
         this.hideNavBar();
         const { history } = this.props;
         if (history) history.push('/home/usermanagement');
+    }
+
+    redirectToDashboard = (event) => {
+        event.preventDefault();
+        this.hideNavBar();
+        const { history } = this.props;
+        if (history) history.push('/home/dashboard');
     }
 
     render() {
@@ -266,24 +294,24 @@ class NavMenu extends Component {
                     <List style={{ marginLeft: 5 }}>
 
                         {/* Products Management */}
-                        <ListItem button onClick={this.redirectToCashFlowDetails}>
-                            <Tooltip title="Cash Flow Details">
+                        <ListItem button onClick={this.redirectToPortCo}>
+                            <Tooltip title="PortCo">
                                 <StoreIcon className="drawerItems" />
                             </Tooltip>
                             <ListItemText className="drawerItemsText"><span style={{ fontFamily: 'poppins' }}>PortCo</span></ListItemText>
                         </ListItem>
 
                         {/* Products Management */}
-                        <ListItem button onClick={this.redirectToCashFlowDetails}>
-                            <Tooltip title="Cash Flow Details">
+                        <ListItem button onClick={this.redirectToFundTypes}>
+                            <Tooltip title="Fund Types">
                                 <MergeTypeIcon className="drawerItems" />
                             </Tooltip>
                             <ListItemText className="drawerItemsText"><span style={{ fontFamily: 'poppins' }}>Fund Types</span></ListItemText>
                         </ListItem>
 
                         {/* Products Management */}
-                        <ListItem button onClick={this.redirectToCashFlowDetails}>
-                            <Tooltip title="Cash Flow Details">
+                        <ListItem button onClick={this.redirectToShareClass}>
+                            <Tooltip title="Share Class">
                                 <ClassIcon className="drawerItems" />
                             </Tooltip>
                             <ListItemText className="drawerItemsText"><span style={{ fontFamily: 'poppins' }}>Share Class</span></ListItemText>
