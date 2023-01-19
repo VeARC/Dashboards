@@ -56,7 +56,7 @@ class CashFlowDetails extends Component {
       message: "",
       columnDefs: [
         {
-          headerName: "PortoCo Name",
+          headerName: "Portfolio Name",
           field: "PortCoName",
           cellStyle: { "text-align": "center" },
         },
@@ -81,7 +81,7 @@ class CashFlowDetails extends Component {
           cellStyle: { "text-align": "center" },
         },
         {
-          headerName: "Estimated Value",
+          headerName: "Estimated Value of Investment",
           field: "InvEstimatedValue",
           cellStyle: { "text-align": "center" },
         },
