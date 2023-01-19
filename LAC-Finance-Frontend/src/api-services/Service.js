@@ -1,5 +1,5 @@
 const baseUrl = "http://localhost:5000";
-const token = sessionStorage.getItem("secretToken");
+//const token = sessionStorage.getItem("secretToken");
 
 export async function get(url) {
   try {
@@ -7,7 +7,7 @@ export async function get(url) {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${sessionStorage.getItem("secretToken")}`,
       },
     });
     return await response.json();
@@ -23,7 +23,7 @@ export async function searchById(url, id) {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${sessionStorage.getItem("secretToken")}`,
       },
     });
     return await response.json();
@@ -39,7 +39,7 @@ export async function create(url, data) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${sessionStorage.getItem("secretToken")}`,
       },
       body: JSON.stringify(data),
     });
@@ -56,7 +56,7 @@ export async function update(url, data, id) {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${sessionStorage.getItem("secretToken")}`,
       },
       body: JSON.stringify(data),
     });
@@ -73,7 +73,7 @@ export async function remove(url, id) {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${sessionStorage.getItem("secretToken")}`,
       },
     });
     return await response.json();
