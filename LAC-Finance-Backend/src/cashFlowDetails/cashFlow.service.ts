@@ -19,7 +19,7 @@ export class CashFlowService {
     private readonly portCoDetailsRepository: Repository<Dimportcodetails>,
     @InjectRepository(Dimshareclass)
     private readonly shareClassRepository: Repository<Dimshareclass>,
-  ) {}
+  ) { }
 
   //Get all cashflow details
   async findAll() {
@@ -62,6 +62,31 @@ export class CashFlowService {
       ...cashFlow,
     });
     return await this.cashFlowRepository.save(cashFlowDetail);
+  }
+
+  //Bulk Upload Cashflow
+  async bulkUploadCashFlow(cashFlows: CashFlowDTO[]): Promise<any> {
+    let queryResult = {};
+    cashFlows.map(async cashFlow => {
+      if (cashFlow) {
+        let sqlQuery = `exec dbo.udp_BulkUploadCashFlowDetails 
+          @PortCoName = '${cashFlow.PortCoName}', 
+          @FundType = '${cashFlow.FundType}',
+          @ShareClass = '${cashFlow.ShareClass}',
+          @Date = '${cashFlow.Date}',
+          @InvestmentCost = ${cashFlow.InvestmentCost ? cashFlow.InvestmentCost : 0},
+          @InvEstimatedValue = ${cashFlow.InvEstimatedValue ? cashFlow.InvEstimatedValue : 0}`;
+          console.log(sqlQuery);
+        await this.cashFlowRepository.query(sqlQuery)
+          .then(res => {
+            queryResult = res[0];
+          })
+          .catch((exception) => {
+            throw exception;
+          });
+      }
+    })
+    return queryResult;
   }
 
   //Update a new Cashflow
