@@ -11,7 +11,7 @@ import {
   InputLabel,
   Link,
   CircularProgress,
-  Backdrop
+  Backdrop,
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { AgGridReact } from "ag-grid-react";
@@ -24,15 +24,15 @@ import { create, get, remove, search } from "../../api-services/Service";
 import DeleteConfirmation from "../../components/modal/DeleteConfirmation";
 import CommonFunc from "../../components/common/CommonFunc";
 import StatusBar from "../../services/snackbarService";
-import { ExcelRenderer } from 'react-excel-renderer';
+import { ExcelRenderer } from "react-excel-renderer";
 
 const withMediaQuery =
   (...args) =>
-    (Component) =>
-      (props) => {
-        const mediaQuery = useMediaQuery(...args);
-        return <Component mediaQuery={mediaQuery} {...props} />;
-      };
+  (Component) =>
+  (props) => {
+    const mediaQuery = useMediaQuery(...args);
+    return <Component mediaQuery={mediaQuery} {...props} />;
+  };
 
 class CashFlowDetails extends Component {
   constructor(props) {
@@ -58,7 +58,14 @@ class CashFlowDetails extends Component {
       severity: "success",
       message: "",
       inputFile: null,
-      excelCols: ['PortCoName', 'FundType', 'ShareClass', 'Date', 'InvestmentCost', 'InvEstimatedValue'],
+      excelCols: [
+        "PortCoName",
+        "FundType",
+        "ShareClass",
+        "Date",
+        "InvestmentCost",
+        "InvEstimatedValue",
+      ],
       columnDefs: [
         {
           headerName: "Portfolio Name",
@@ -253,59 +260,70 @@ class CashFlowDetails extends Component {
   fileHandler = (event) => {
     debugger;
     let fileObj = event.target.files[0];
-    this.setState({ loading: true, inputFile: fileObj });
-    ExcelRenderer(fileObj, (err, resp) => {
-      if (err) {
-        console.log(err);
-      } else {
-        let cols = resp.rows[0];
-        if (this.checkExcelColumns(cols)) {
-          let newRows = [];
-          resp.rows.slice(1).map((row, index) => {
-            if (row && row !== "undefined") {
-              newRows.push({
-                [cols[0]]: row[0],
-                [cols[1]]: row[1],
-                [cols[2]]: row[2],
-                [cols[3]]: row[3],
-                [cols[4]]: row[4],
-                [cols[5]]: row[5],
-              });
-            }
-          });
+    if (fileObj) {
+      this.setState({ loading: true, inputFile: fileObj });
+      ExcelRenderer(fileObj, (err, resp) => {
+        if (err) {
+          console.log(err);
+        } else {
+          let cols = resp.rows[0];
+          if (this.checkExcelColumns(cols)) {
+            let newRows = [];
+            resp.rows.slice(1).map((row, index) => {
+              if (row && row !== "undefined") {
+                newRows.push({
+                  [cols[0]]: row[0],
+                  [cols[1]]: row[1],
+                  [cols[2]]: row[2],
+                  [cols[3]]: row[3],
+                  [cols[4]]: row[4],
+                  [cols[5]]: row[5],
+                });
+              }
+            });
 
-          if (newRows.length === 0) {
+            if (newRows.length === 0) {
+              this.setState({
+                loading: false,
+                openStatusBar: true,
+                severity: "error",
+                message: "No data found in file",
+                inputFile: null,
+              });
+            } else {
+              if (this.validateRowData(newRows)) {
+                this.saveRowData(newRows);
+              }
+            }
+          } else {
             this.setState({
+              inputFile: null,
               loading: false,
               openStatusBar: true,
               severity: "error",
-              message: "No data found in file",
-              inputFile: null
-            })
-          } else {
-            if (this.validateRowData(newRows)) {
-              this.saveRowData(newRows);
-            }
+              message:
+                "One or more invalid column(s) found, expected columns are [PortCoName, FundType, ShareClass, Date, InvestmentCost, InvEstimatedValue]",
+            });
           }
-        } else {
-          this.setState({
-            inputFile: null,
-            loading: false,
-            openStatusBar: true,
-            severity: "error",
-            message: "One or more invalid column(s) found, expected columns are [PortCoName, FundType, ShareClass, Date, InvestmentCost, InvEstimatedValue]",
-          });
         }
-      }
-    });
-  }
+      });
+    } else {
+      this.setState({
+        inputFile: null,
+        loading: false,
+        openStatusBar: true,
+        severity: "error",
+        message: "No file selected",
+      });
+    }
+  };
 
   //Check if column name is valid or invalid
   checkExcelColumns = (cols) => {
     if (this.state.excelCols.length === cols.length) {
       var result = this.state.excelCols.filter(function (actualCol) {
         return !cols.includes(actualCol);
-      })
+      });
 
       if (result.length > 0) {
         return false;
@@ -315,33 +333,39 @@ class CashFlowDetails extends Component {
     } else {
       return false;
     }
-  }
+  };
 
   validateRowData = (rowData) => {
     let valid = true;
-    let message = '';
+    let message = "";
 
     var result = rowData.filter(function (row) {
-      let invEstimatedValue = row.InvEstimatedValue ? Number(row.InvEstimatedValue) : 0;
+      let invEstimatedValue = row.InvEstimatedValue
+        ? Number(row.InvEstimatedValue)
+        : 0;
       let investmentCost = row.InvestmentCost ? Number(row.InvestmentCost) : 0;
       return isNaN(invEstimatedValue) || isNaN(investmentCost);
-    })
+    });
 
     if (result.length > 0) {
       valid = false;
-      message = 'Investment Cost and/or Estimated Value should be numeric';
+      message = "Investment Cost and/or Estimated Value should be numeric";
     }
 
     if (valid) {
       result = rowData.filter(function (row) {
-        let invEstimatedValue = row.InvEstimatedValue ? Number(row.InvEstimatedValue) : 0;
-        let investmentCost = row.InvestmentCost ? Number(row.InvestmentCost) : 0;
+        let invEstimatedValue = row.InvEstimatedValue
+          ? Number(row.InvEstimatedValue)
+          : 0;
+        let investmentCost = row.InvestmentCost
+          ? Number(row.InvestmentCost)
+          : 0;
         return invEstimatedValue > 0 && investmentCost > 0;
-      })
+      });
 
       if (result.length > 0) {
         valid = false;
-        message = 'You cannot have both Investment Cost and Estimated Value';
+        message = "You cannot have both Investment Cost and Estimated Value";
       }
     }
 
@@ -351,24 +375,24 @@ class CashFlowDetails extends Component {
         severity: "error",
         message: message,
         loading: false,
-        inputFile: null
+        inputFile: null,
       });
     }
     return valid;
-  }
+  };
 
   saveRowData = (rowData) => {
-    create('/cashFlow/bulkUploadCashFlow', rowData).then(response => {
+    create("/cashFlow/bulkUploadCashFlow", rowData).then((response) => {
       this.getCashFlowDetails();
       this.setState({
         openStatusBar: true,
         severity: "success",
         message: "Cashflow details uploaded succesfully.",
         loading: false,
-        inputFile: null
+        inputFile: null,
       });
     });
-  }
+  };
 
   reset = () => {
     this.setState({
@@ -406,10 +430,7 @@ class CashFlowDetails extends Component {
     return (
       <Fragment>
         <div>
-          <Backdrop
-            className={classes.backdrop}
-            open={this.state.loading}
-          >
+          <Backdrop className={classes.backdrop} open={this.state.loading}>
             <CircularProgress color="inherit" />
           </Backdrop>
 
@@ -434,7 +455,9 @@ class CashFlowDetails extends Component {
               <h2 className="header-text-color">Cash Flow Details</h2>
             </Grid>
             <Grid item xs={2} style={{ margin: "auto" }}>
-              <Link style={{ float: "right" }} href="#">Download Sample File</Link>
+              <Link style={{ float: "right" }} href="#">
+                Download Sample File
+              </Link>
             </Grid>
             <Grid item xs={2} style={{ margin: "auto" }}>
               <label htmlFor="inputFile">
@@ -444,7 +467,9 @@ class CashFlowDetails extends Component {
                   name="inputFile"
                   type="file"
                   accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                  onChange={e => { this.fileHandler(e) }}                  
+                  onChange={(e) => {
+                    this.fileHandler(e);
+                  }}
                 />
                 <Button
                   className={classes.customButtonPrimary}

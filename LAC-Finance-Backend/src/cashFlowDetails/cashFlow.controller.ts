@@ -16,7 +16,7 @@ import { CashFlowService } from './cashFlow.service';
 
 @Controller('cashFlow')
 export class CashFlowController {
-  constructor(private readonly cashFlowService: CashFlowService) { }
+  constructor(private readonly cashFlowService: CashFlowService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Get()

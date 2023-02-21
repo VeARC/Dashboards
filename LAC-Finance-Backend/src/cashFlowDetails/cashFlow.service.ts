@@ -19,7 +19,7 @@ export class CashFlowService {
     private readonly portCoDetailsRepository: Repository<Dimportcodetails>,
     @InjectRepository(Dimshareclass)
     private readonly shareClassRepository: Repository<Dimshareclass>,
-  ) { }
+  ) {}
 
   //Get all cashflow details
   async findAll() {
@@ -66,27 +66,57 @@ export class CashFlowService {
 
   //Bulk Upload Cashflow
   async bulkUploadCashFlow(cashFlows: CashFlowDTO[]): Promise<any> {
-    let queryResult = {};
-    cashFlows.map(async cashFlow => {
-      if (cashFlow) {
-        let sqlQuery = `exec dbo.udp_BulkUploadCashFlowDetails 
-          @PortCoName = '${cashFlow.PortCoName}', 
-          @FundType = '${cashFlow.FundType}',
-          @ShareClass = '${cashFlow.ShareClass}',
-          @Date = '${cashFlow.Date}',
-          @InvestmentCost = ${cashFlow.InvestmentCost ? cashFlow.InvestmentCost : 0},
-          @InvEstimatedValue = ${cashFlow.InvEstimatedValue ? cashFlow.InvEstimatedValue : 0}`;
-          console.log(sqlQuery);
-        await this.cashFlowRepository.query(sqlQuery)
-          .then(res => {
-            queryResult = res[0];
-          })
-          .catch((exception) => {
-            throw exception;
-          });
-      }
-    })
-    return queryResult;
+    const fundTypes = await this.fundTypesRepository.find();
+    const portfolios = await this.portCoDetailsRepository.find();
+    const shareClasses = await this.shareClassRepository.find();
+    const cashFlowDetails: Factcashflowdetails[] = [];
+    cashFlows.map((cashFlow) => {
+      cashFlowDetails.push({
+        PortCoId: portfolios.find((p) => p.PortCoName === cashFlow.PortCoName)
+          .PortCoId,
+        FundId: fundTypes.find((f) => f.FundType === cashFlow.FundType).FundId,
+        ShareClassId: shareClasses.find(
+          (sc) => sc.ShareClass === cashFlow.ShareClass,
+        ).ShareClassId,
+        InvestmentCost: cashFlow.InvestmentCost,
+        InvEstimatedValue: cashFlow.InvEstimatedValue,
+        RecordId: null,
+        Date: new Date(cashFlow.Date),
+        CreatedBy: 'Sai Krishna',
+        CreatedDate: null,
+        ModifiedBy: 'Krishna',
+        ModifiedDate: null,
+        VersionId: 1,
+      });
+    });
+    const res = this.cashFlowRepository.save(cashFlowDetails);
+    return res;
+    // let queryResult = {};
+    // cashFlows.map(async (cashFlow) => {
+    //   if (cashFlow) {
+    //     const sqlQuery = `exec dbo.udp_BulkUploadCashFlowDetails
+    //       @PortCoName = '${cashFlow.PortCoName}',
+    //       @FundType = '${cashFlow.FundType}',
+    //       @ShareClass = '${cashFlow.ShareClass}',
+    //       @Date = '${cashFlow.Date}',
+    //       @InvestmentCost = ${
+    //         cashFlow.InvestmentCost ? cashFlow.InvestmentCost : 0
+    //       },
+    //       @InvEstimatedValue = ${
+    //         cashFlow.InvEstimatedValue ? cashFlow.InvEstimatedValue : 0
+    //       }`;
+    //     console.log(sqlQuery);
+    //     await this.cashFlowRepository
+    //       .query(sqlQuery)
+    //       .then((res) => {
+    //         queryResult = res[0];
+    //       })
+    //       .catch((exception) => {
+    //         throw exception;
+    //       });
+    //   }
+    // });
+    // return queryResult;
   }
 
   //Update a new Cashflow
