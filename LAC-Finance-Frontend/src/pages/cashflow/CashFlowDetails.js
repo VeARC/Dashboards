@@ -25,6 +25,7 @@ import DeleteConfirmation from "../../components/modal/DeleteConfirmation";
 import CommonFunc from "../../components/common/CommonFunc";
 import StatusBar from "../../services/snackbarService";
 import { ExcelRenderer } from "react-excel-renderer";
+import CashFlowDetailsTemplate from "../../assets/CashFlowDetailsTemplate.xlsx";
 
 const withMediaQuery =
   (...args) =>
@@ -455,7 +456,12 @@ class CashFlowDetails extends Component {
               <h2 className="header-text-color">Cash Flow Details</h2>
             </Grid>
             <Grid item xs={2} style={{ margin: "auto" }}>
-              <Link style={{ float: "right" }} href="#">
+              <Link
+                style={{ float: "right" }}
+                target="_blank"
+                download={"CashFlowDetailsTemplate"}
+                href={CashFlowDetailsTemplate}
+              >
                 Download Sample File
               </Link>
             </Grid>
