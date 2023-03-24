@@ -8,9 +8,15 @@ import { FundTypesModule } from './fundTypes/fundTypes.module';
 import { PortCoDetailsModule } from './portfolioCompanyDetails/portfolioCompanyDetails.module';
 import { ShareClassModule } from './shareClass/shareClass.module';
 import { UsersModule } from './users/users.module';
+import { ConfigModule } from '@nestjs/config'
+import { PowerBIReportModule } from './powerBIReports/powerBIReport.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: 'environment/prod.env',
+    }),
     TypeOrmModule.forRoot({
       // type: 'mssql',
       // host: 'localhost',
@@ -38,6 +44,7 @@ import { UsersModule } from './users/users.module';
     PortCoDetailsModule,
     ShareClassModule,
     CashFlowModule,
+    PowerBIReportModule
   ],
   controllers: [AppController],
   providers: [AppService],
