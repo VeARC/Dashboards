@@ -7,14 +7,14 @@ export class PowerBIReportService {
 
     async generateAccessToken(): Promise<any> {
         let formBody = [];
-        let url = process.env.requestUrl.replace('tenant_id', process.env.tenantId);
+        let url = 'https://login.microsoftonline.com/369e99eb-38f4-4e0a-8786-2bf9cb835962/oauth2/v2.0/token'; //process.env.requestUrl.replace('tenant_id', process.env.tenantId);
         let rowData = {
-            client_id: process.env.clientId,
-            scope: process.env.scope,
-            client_secret: process.env.clientSecret,
-            username: process.env.userName,
-            password: process.env.password,
-            grant_type: process.env.grantType
+            client_id: 'c48407f2-19b3-421c-afeb-e6a9b271e9af', //process.env.clientId,
+            scope: 'https://analysis.windows.net/powerbi/api/.default', //process.env.scope,
+            client_secret: 'LDO8Q~Hn5bxhUbPoGdg9ZA9q4QAEStrk8JRNjaLc', //process.env.clientSecret,
+            username: 'ovatio@longarc.com', //process.env.userName,
+            password: 'L0ng4rc2022!', //process.env.password,
+            grant_type: 'client_credentials', //process.env.grantType
         }
 
         for (let row in rowData) {
@@ -44,8 +44,7 @@ export class PowerBIReportService {
     }
 
     async generateEmbedToken(powerBIReport: PowerBIReport): Promise<any> {
-        let url = process.env.embedUrl.replace('group_id', powerBIReport.groupId)
-            .replace('report_id', powerBIReport.reportId);
+        let url = 'https://api.powerbi.com/v1.0/myorg/groups/group_id/reports/report_id/GenerateToken'.replace('group_id', powerBIReport.groupId).replace('report_id', powerBIReport.reportId); //process.env.embedUrl.replace('group_id', powerBIReport.groupId).replace('report_id', powerBIReport.reportId);
         let rowData = {
             accessLevel: powerBIReport.accessLevel,
             allowSaveAs: powerBIReport.allowSaveAs
