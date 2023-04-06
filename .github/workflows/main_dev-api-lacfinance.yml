@@ -25,12 +25,19 @@ jobs:
         run: |
           npm install
           npm run build --if-present
+          
+      # Zip the build directory
+      - name: Zip Release
+        uses: TheDoctor0/zip-release@0.7.1
+        with:
+          filename: release.zip
+          path: ./dist/*
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: .
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,4 +59,4 @@ jobs:
           app-name: 'dev-api-lacfinance'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CFB41CDBCD794FD7BB502FDF9F760EEA }}
-          package: .
+          package: release.zip
