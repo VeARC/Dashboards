@@ -19,7 +19,7 @@ export class CashFlowService {
     private readonly portCoDetailsRepository: Repository<Dimportcodetails>,
     @InjectRepository(Dimshareclass)
     private readonly shareClassRepository: Repository<Dimshareclass>,
-  ) {}
+  ) { }
 
   //Get all cashflow details
   async findAll() {
@@ -39,6 +39,7 @@ export class CashFlowService {
           .PortCoName,
         ShareClass: shareClasses.find((s) => s.ShareClassId === x.ShareClassId)
           .ShareClass,
+        Date: new Date(x.Date.getTime() + 330 * 60000),
       };
     });
     return cashFlowDetailsDTO;
@@ -66,57 +67,79 @@ export class CashFlowService {
 
   //Bulk Upload Cashflow
   async bulkUploadCashFlow(cashFlows: CashFlowDTO[]): Promise<any> {
-    const fundTypes = await this.fundTypesRepository.find();
-    const portfolios = await this.portCoDetailsRepository.find();
-    const shareClasses = await this.shareClassRepository.find();
-    const cashFlowDetails: Factcashflowdetails[] = [];
-    cashFlows.map((cashFlow) => {
-      cashFlowDetails.push({
-        PortCoId: portfolios.find((p) => p.PortCoName === cashFlow.PortCoName)
-          .PortCoId,
-        FundId: fundTypes.find((f) => f.FundType === cashFlow.FundType).FundId,
-        ShareClassId: shareClasses.find(
+    let response: any = {};
+    try {
+      let validFundType: boolean = true;
+      let validPortCo: boolean = true;
+      let validShareClass: boolean = true;
+      const fundTypes = await this.fundTypesRepository.find();
+      const portfolios = await this.portCoDetailsRepository.find();
+      const shareClasses = await this.shareClassRepository.find();
+      const cashFlowDetails: Factcashflowdetails[] = [];
+
+      cashFlows.forEach(cashFlow => {
+        let fundType = fundTypes.find(
+          (ft) => ft.FundType === cashFlow.FundType,
+        );
+        if (!fundType)
+          validFundType = false;
+
+        let portfolio = portfolios.find(
+          (pf) => pf.PortCoName === cashFlow.PortCoName,
+        );
+        if (!portfolio)
+          validPortCo = false;
+
+        let shareClass = shareClasses.find(
           (sc) => sc.ShareClass === cashFlow.ShareClass,
-        ).ShareClassId,
-        InvestmentCost: cashFlow.InvestmentCost,
-        InvEstimatedValue: cashFlow.InvEstimatedValue,
-        RecordId: null,
-        Date: new Date(cashFlow.Date),
-        CreatedBy: 'Sai Krishna',
-        CreatedDate: null,
-        ModifiedBy: 'Krishna',
-        ModifiedDate: null,
-        VersionId: 1,
-      });
-    });
-    const res = this.cashFlowRepository.save(cashFlowDetails);
-    return res;
-    // let queryResult = {};
-    // cashFlows.map(async (cashFlow) => {
-    //   if (cashFlow) {
-    //     const sqlQuery = `exec dbo.udp_BulkUploadCashFlowDetails
-    //       @PortCoName = '${cashFlow.PortCoName}',
-    //       @FundType = '${cashFlow.FundType}',
-    //       @ShareClass = '${cashFlow.ShareClass}',
-    //       @Date = '${cashFlow.Date}',
-    //       @InvestmentCost = ${
-    //         cashFlow.InvestmentCost ? cashFlow.InvestmentCost : 0
-    //       },
-    //       @InvEstimatedValue = ${
-    //         cashFlow.InvEstimatedValue ? cashFlow.InvEstimatedValue : 0
-    //       }`;
-    //     console.log(sqlQuery);
-    //     await this.cashFlowRepository
-    //       .query(sqlQuery)
-    //       .then((res) => {
-    //         queryResult = res[0];
-    //       })
-    //       .catch((exception) => {
-    //         throw exception;
-    //       });
-    //   }
-    // });
-    // return queryResult;
+        );
+        if (!shareClass)
+          validShareClass = false;
+      })
+
+      if (validFundType && validPortCo && validShareClass) {
+        cashFlows.forEach((cashFlow) => {
+          cashFlowDetails.push({
+            PortCoId: portfolios.find((p) => p.PortCoName === cashFlow.PortCoName)
+              .PortCoId,
+            FundId: fundTypes.find((f) => f.FundType === cashFlow.FundType).FundId,
+            ShareClassId: shareClasses.find(
+              (sc) => sc.ShareClass === cashFlow.ShareClass,
+            ).ShareClassId,
+            InvestmentCost: cashFlow.InvestmentCost,
+            InvEstimatedValue: cashFlow.InvEstimatedValue,
+            RecordId: null,
+            Date: new Date(cashFlow.Date),
+            CreatedBy: cashFlow.CreatedBy,
+            CreatedDate: new Date(),
+            ModifiedBy: cashFlow.CreatedBy,
+            ModifiedDate: new Date(),
+            VersionId: 1,
+          });
+        });
+        await this.cashFlowRepository.save(cashFlowDetails);
+        response.severity = 'success';
+        response.message = "Cashflow details uploaded succesfully.";
+      } else {
+        let message = '';
+        if (!validFundType)
+          message = ' Fund Type,';
+        if (!validPortCo)
+          message += ' Portfolio,';
+        if (!validShareClass)
+          message += ' Share Class';
+
+        let lastChar = message.substr(message.length - 1);
+        message = lastChar === ',' ? message.slice(0, -1) : message;
+        response.severity = 'error';
+        response.message = 'Invalid' + message + ' data found in uploaded sheet, please correct them and try again';
+      }
+      return response;
+    } catch (error) {
+      response.severity = 'error';
+      response.message = 'Failed to upload cashflow details, please contact admin';
+      return response;
+    }
   }
 
   //Update a new Cashflow
